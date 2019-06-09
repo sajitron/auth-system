@@ -1,0 +1,45 @@
+{
+	"name": "authentication-system",
+	"version": "1.0.0",
+	"description": "An authentication system that keeps track of logged in users for a particular account",
+	"main": "index.js",
+	"scripts": {
+		"start": "node dist/app.js",
+		"dev": "nodemon src/app.ts",
+		"build": "tsc -p .",
+		"watch": "tsc -w"
+	},
+	"author": "Adams Banjo",
+	"license": "ISC",
+	"dependencies": {
+		"bcrypt": "^3.0.6",
+		"body-parser": "^1.19.0",
+		"concurrently": "^4.1.0",
+		"cors": "^2.8.5",
+		"dotenv": "^8.0.0",
+		"express": "^4.17.1",
+		"jsonwebtoken": "^8.5.1",
+		"mongoose": "^5.5.14",
+		"morgan": "^1.9.1",
+		"passport": "^0.4.0",
+		"passport-jwt": "^4.0.0",
+		"passport-local": "^1.0.0"
+	},
+	"devDependencies": {
+		"@types/bcrypt": "^3.0.0",
+		"@types/body-parser": "^1.17.0",
+		"@types/cors": "^2.8.5",
+		"@types/dotenv": "^6.1.1",
+		"@types/express": "^4.17.0",
+		"@types/jsonwebtoken": "^8.3.2",
+		"@types/mongoose": "^5.5.5",
+		"@types/morgan": "^1.7.35",
+		"@types/node": "^12.0.7",
+		"@types/passport": "^1.0.0",
+		"@types/passport-jwt": "^3.0.1",
+		"@types/passport-local": "^1.0.33",
+		"nodemon": "^1.19.1",
+		"ts-node": "^8.2.0",
+		"typescript": "^3.5.1"
+	}
+}
