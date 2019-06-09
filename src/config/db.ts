@@ -1,4 +1,7 @@
 import { connect } from 'mongoose';
+import dotenv from 'dotenv';
+
+dotenv.config();
 
 const db: any = process.env.MONGO_URI;
 
@@ -17,4 +20,4 @@ const connectDB = async () => {
 	}
 };
 
-module.exports = connectDB;
+export default connectDB;

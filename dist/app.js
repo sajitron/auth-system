@@ -4,8 +4,40 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
+const morgan_1 = __importDefault(require("morgan"));
+const cors_1 = __importDefault(require("cors"));
+const dotenv_1 = __importDefault(require("dotenv"));
+const db_1 = __importDefault(require("./config/db"));
+const path_1 = __importDefault(require("path"));
+const helmet = require("helmet");
+// Initialize configuration
+dotenv_1.default.config();
 const app = express_1.default();
-app.get('/', (req, res) => {
-    res.send('Hello');
+// Secure app
+app.use(helmet());
+// Connecr Database
+db_1.default();
+// Initialize middleware
+app.use(express_1.default.json({}));
+app.use(express_1.default.urlencoded({ extended: true }));
+// log all requests
+app.use(morgan_1.default('combined'));
+// allow cross origin requests
+app.use(cors_1.default());
+// serve static files in production environment
+if (process.env.NODE_ENV === 'production') {
+    // set static folder
+    app.use(express_1.default.static(path_1.default.join(__dirname, '../', 'client/build')));
+    app.get('*', (req, res) => {
+        res.sendFile(path_1.default.join(__dirname, '../', 'client/build/index.html'));
+    });
+}
+// * Setup api routes here
+// serve static files in dev environment
+app.use(express_1.default.static(path_1.default.join(__dirname, '../', 'dist')));
+// serve default file on some error
+app.get('/*', (req, res) => {
+    res.sendfile('index.html', { root: path_1.default.join(__dirname, '../', './dist') });
 });
-app.listen(5000, () => console.log('server running on port'));
+const PORT = process.env.PORT || 5000;
+app.listen(PORT, () => console.log(`Server started on port ${PORT}`));
