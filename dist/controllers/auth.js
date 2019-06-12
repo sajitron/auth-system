@@ -3,7 +3,10 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
+const dotenv_1 = __importDefault(require("dotenv"));
 const User_1 = __importDefault(require("../models/User"));
+dotenv_1.default.config();
 function signup(req, res, next) {
     const { email, password, firstName, lastName } = req.body;
     if (!email || !password)
@@ -28,9 +31,18 @@ function signup(req, res, next) {
         user.save((err) => {
             if (err)
                 return next(err);
+            const payload = {
+                email: user.email,
+                expires: '100d'
+            };
+            // generate a signed token and return in the response
+            const token = jsonwebtoken_1.default.sign(JSON.stringify(payload), process.env.SECRET);
+            // asign our jwt to the cookie
+            // res.cookie('jwt', token, { httpOnly: true, secure: true });
             // respond to request indicating user was created
-            res.json({ firstName, lastName, email });
+            res.json({ firstName, lastName, email, token });
         });
     });
 }
 exports.signup = signup;
+// todo - login user after signup flow
