@@ -18,16 +18,22 @@ export interface UserDocument extends User, Document {
 
 const UserSchema = new Schema({
 	firstName: {
-		type: SchemaTypes.String
+		type: SchemaTypes.String,
+		required: true
 	},
-	lastName: { type: SchemaTypes.String },
+	lastName: {
+		type: SchemaTypes.String,
+		required: true
+	},
 	email: {
 		type: SchemaTypes.String,
 		unique: true,
-		lowercase: true
+		lowercase: true,
+		required: true
 	},
 	password: {
-		type: SchemaTypes.String
+		type: SchemaTypes.String,
+		required: true
 	},
 	logNumber: { type: SchemaTypes.Number }
 });

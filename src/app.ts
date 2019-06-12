@@ -1,10 +1,14 @@
 import express, { Application, Request, Response } from 'express';
 import morgan from 'morgan';
+import compression from 'compression';
 import cors from 'cors';
 import dotenv from 'dotenv';
 import connectDB from './config/db';
 import path from 'path';
-import helmet = require('helmet');
+import helmet from 'helmet';
+// import passport from 'passport';
+import errorHandler from 'errorhandler';
+import router from './routes';
 
 // Initialize configuration
 dotenv.config();
@@ -14,11 +18,14 @@ const app: Application = express();
 // Secure app
 app.use(helmet());
 
-// Connecr Database
+// Connect Database
 connectDB();
 
+// compress data
+app.use(compression());
+
 // Initialize middleware
-app.use(express.json({}));
+app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 // log all requests
@@ -36,7 +43,13 @@ if (process.env.NODE_ENV === 'production') {
 		res.sendFile(path.join(__dirname, '../', 'client/build/index.html'));
 	});
 }
+
+if (process.env.NODE_ENV === 'development') {
+	app.use(errorHandler());
+}
+
 // * Setup api routes here
+router(app);
 
 // serve static files in dev environment
 app.use(express.static(path.join(__dirname, '../', 'dist')));

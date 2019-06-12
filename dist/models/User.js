@@ -7,16 +7,22 @@ const mongoose_1 = require("mongoose");
 const bcrypt_1 = __importDefault(require("bcrypt"));
 const UserSchema = new mongoose_1.Schema({
     firstName: {
-        type: mongoose_1.SchemaTypes.String
+        type: mongoose_1.SchemaTypes.String,
+        required: true
     },
-    lastName: { type: mongoose_1.SchemaTypes.String },
+    lastName: {
+        type: mongoose_1.SchemaTypes.String,
+        required: true
+    },
     email: {
         type: mongoose_1.SchemaTypes.String,
         unique: true,
-        lowercase: true
+        lowercase: true,
+        required: true
     },
     password: {
-        type: mongoose_1.SchemaTypes.String
+        type: mongoose_1.SchemaTypes.String,
+        required: true
     },
     logNumber: { type: mongoose_1.SchemaTypes.Number }
 });

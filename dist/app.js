@@ -5,20 +5,26 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
 const morgan_1 = __importDefault(require("morgan"));
+const compression_1 = __importDefault(require("compression"));
 const cors_1 = __importDefault(require("cors"));
 const dotenv_1 = __importDefault(require("dotenv"));
 const db_1 = __importDefault(require("./config/db"));
 const path_1 = __importDefault(require("path"));
-const helmet = require("helmet");
+const helmet_1 = __importDefault(require("helmet"));
+// import passport from 'passport';
+const errorhandler_1 = __importDefault(require("errorhandler"));
+const routes_1 = __importDefault(require("./routes"));
 // Initialize configuration
 dotenv_1.default.config();
 const app = express_1.default();
 // Secure app
-app.use(helmet());
-// Connecr Database
+app.use(helmet_1.default());
+// Connect Database
 db_1.default();
+// compress data
+app.use(compression_1.default());
 // Initialize middleware
-app.use(express_1.default.json({}));
+app.use(express_1.default.json());
 app.use(express_1.default.urlencoded({ extended: true }));
 // log all requests
 app.use(morgan_1.default('combined'));
@@ -32,7 +38,11 @@ if (process.env.NODE_ENV === 'production') {
         res.sendFile(path_1.default.join(__dirname, '../', 'client/build/index.html'));
     });
 }
+if (process.env.NODE_ENV === 'development') {
+    app.use(errorhandler_1.default());
+}
 // * Setup api routes here
+routes_1.default(app);
 // serve static files in dev environment
 app.use(express_1.default.static(path_1.default.join(__dirname, '../', 'dist')));
 // serve default file on some error
