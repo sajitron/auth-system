@@ -6,7 +6,6 @@ import dotenv from 'dotenv';
 import connectDB from './config/db';
 import path from 'path';
 import helmet from 'helmet';
-// import passport from 'passport';
 import errorHandler from 'errorhandler';
 import router from './routes/router';
 

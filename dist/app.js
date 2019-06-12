@@ -11,7 +11,6 @@ const dotenv_1 = __importDefault(require("dotenv"));
 const db_1 = __importDefault(require("./config/db"));
 const path_1 = __importDefault(require("path"));
 const helmet_1 = __importDefault(require("helmet"));
-// import passport from 'passport';
 const errorhandler_1 = __importDefault(require("errorhandler"));
 const router_1 = __importDefault(require("./routes/router"));
 // Initialize configuration

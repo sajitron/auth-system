@@ -3,6 +3,7 @@ import { signup } from '../controllers/auth';
 import { Application, Request, Response } from 'express';
 import jwt from 'jsonwebtoken';
 import dotenv from 'dotenv';
+import User from '../models/User';
 require('../services/passport');
 // import passportService from '../services/passport';
 
@@ -33,12 +34,23 @@ export default function router(app: Application) {
 			req.login(payload, { session: false }, (error: Error) => {
 				if (error) res.status(400).send({ error });
 
-				// generate a signed token and return in the response
-				const token = jwt.sign(JSON.stringify(payload), process.env.SECRET!);
+				User.findOne({ email: user.email }, function(err: Error, userDetail: any) {
+					if (err) res.status(422).send({ error: 'Could not get user' });
 
-				// asign our jwt to the cookie
-				res.cookie('jwt', token, { httpOnly: true, secure: true });
-				res.status(200).send({ token });
+					// if maximum amount of users logged in, reject the login
+					if (userDetail.logNumber >= process.env.MAX_LOGIN!) {
+						res.status(422).send({ error: 'Maximum amount of users logged in' });
+					} else {
+						// increase the logNumber by 1
+						User.findByIdAndUpdate({ _id: user._id }, { $inc: { logNumber: 1 } }).exec();
+						// generate a signed token and return in the response
+						const token = jwt.sign(JSON.stringify(payload), process.env.SECRET!);
+
+						// asign our jwt to the cookie
+						res.cookie('jwt', token, { httpOnly: true, secure: true });
+						res.status(200).send({ token });
+					}
+				});
 			});
 		})(req, res);
 	});

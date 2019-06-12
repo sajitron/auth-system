@@ -7,6 +7,7 @@ const passport_1 = __importDefault(require("passport"));
 const auth_1 = require("../controllers/auth");
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const dotenv_1 = __importDefault(require("dotenv"));
+const User_1 = __importDefault(require("../models/User"));
 require('../services/passport');
 // import passportService from '../services/passport';
 dotenv_1.default.config();
@@ -31,11 +32,23 @@ function router(app) {
             req.login(payload, { session: false }, (error) => {
                 if (error)
                     res.status(400).send({ error });
-                // generate a signed token and return in the response
-                const token = jsonwebtoken_1.default.sign(JSON.stringify(payload), process.env.SECRET);
-                // asign our jwt to the cookie
-                res.cookie('jwt', token, { httpOnly: true, secure: true });
-                res.status(200).send({ token });
+                User_1.default.findOne({ email: user.email }, function (err, userDetail) {
+                    if (err)
+                        res.status(422).send({ error: 'Could not get user' });
+                    // if maximum amount of users logged in, reject the login
+                    if (userDetail.logNumber >= process.env.MAX_LOGIN) {
+                        res.status(422).send({ error: 'Maximum amount of users logged in' });
+                    }
+                    else {
+                        // increase the logNumber by 1
+                        User_1.default.findByIdAndUpdate({ _id: user._id }, { $inc: { logNumber: 1 } }).exec();
+                        // generate a signed token and return in the response
+                        const token = jsonwebtoken_1.default.sign(JSON.stringify(payload), process.env.SECRET);
+                        // asign our jwt to the cookie
+                        res.cookie('jwt', token, { httpOnly: true, secure: true });
+                        res.status(200).send({ token });
+                    }
+                });
             });
         })(req, res);
     });

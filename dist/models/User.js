@@ -24,7 +24,7 @@ const UserSchema = new mongoose_1.Schema({
         type: mongoose_1.SchemaTypes.String,
         required: true
     },
-    logNumber: { type: mongoose_1.SchemaTypes.Number }
+    logNumber: { type: mongoose_1.SchemaTypes.Number, default: 1 }
 });
 // hash password before saving user
 UserSchema.pre('save', function (next) {
