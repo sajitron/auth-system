@@ -8,7 +8,7 @@ import path from 'path';
 import helmet from 'helmet';
 // import passport from 'passport';
 import errorHandler from 'errorhandler';
-import router from './routes';
+import router from './routes/router';
 
 // Initialize configuration
 dotenv.config();

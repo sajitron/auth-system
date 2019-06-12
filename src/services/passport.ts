@@ -32,7 +32,7 @@ const localLogin = new LocalStrategy(localOptions, async (email: string, passwor
 
 // setup options for JWT strategy
 const jwtOptions = {
-	// tell passport to get the token from the cookie header
+	// tell passport to get the token from authorization header with Bearer prefix
 	jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
 	secretOrKey: process.env.SECRET
 };
