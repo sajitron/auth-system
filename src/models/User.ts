@@ -35,7 +35,7 @@ const UserSchema = new Schema({
 		type: SchemaTypes.String,
 		required: true
 	},
-	logNumber: { type: SchemaTypes.Number, default: 1 }
+	logNumber: { type: SchemaTypes.Number, default: 1, min: 0 }
 });
 
 // hash password before saving user
