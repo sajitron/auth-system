@@ -45,4 +45,12 @@ function signup(req, res, next) {
     });
 }
 exports.signup = signup;
-// todo - login user after signup flow
+function reduceLogNumber(req, res, _next) {
+    const { email } = req.user;
+    User_1.default.findOneAndUpdate({ email }, { $inc: { logNumber: -1 } }, (err, _user) => {
+        if (err)
+            res.status(422).send({ error: 'Unable to logout user' });
+        res.status(200).send({ status: 'success' });
+    });
+}
+exports.reduceLogNumber = reduceLogNumber;

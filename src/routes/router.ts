@@ -1,5 +1,5 @@
 import passport from 'passport';
-import { signup } from '../controllers/auth';
+import { signup, reduceLogNumber } from '../controllers/auth';
 import { Application, Request, Response } from 'express';
 import jwt from 'jsonwebtoken';
 import dotenv from 'dotenv';
@@ -46,6 +46,7 @@ export default function router(app: Application) {
 						// generate a signed token and return in the response
 						const token = jwt.sign(JSON.stringify(payload), process.env.SECRET!);
 
+						// todo check out how to use cookies properly
 						// asign our jwt to the cookie
 						res.cookie('jwt', token, { httpOnly: true, secure: true });
 						res.status(200).send({ token });
@@ -54,4 +55,6 @@ export default function router(app: Application) {
 			});
 		})(req, res);
 	});
+
+	app.get('/signout', requireAuth, reduceLogNumber);
 }

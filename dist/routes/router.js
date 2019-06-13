@@ -44,6 +44,7 @@ function router(app) {
                         User_1.default.findByIdAndUpdate({ _id: user._id }, { $inc: { logNumber: 1 } }).exec();
                         // generate a signed token and return in the response
                         const token = jsonwebtoken_1.default.sign(JSON.stringify(payload), process.env.SECRET);
+                        // todo check out how to use cookies properly
                         // asign our jwt to the cookie
                         res.cookie('jwt', token, { httpOnly: true, secure: true });
                         res.status(200).send({ token });
@@ -52,5 +53,6 @@ function router(app) {
             });
         })(req, res);
     });
+    app.get('/signout', requireAuth, auth_1.reduceLogNumber);
 }
 exports.default = router;
