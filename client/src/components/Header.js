@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
-// import { connect } from 'react-redux';
+import { connect } from 'react-redux';
 
 class Header extends Component {
 	renderLinks() {
@@ -23,10 +23,10 @@ class Header extends Component {
 	}
 }
 
-// function mapStateToProps(state) {
-// 	return { authenticated: state.auth.authenticated };
-// }
+function mapStateToProps(state) {
+	return { authenticated: state.auth.authenticated };
+}
 
-// export default connect(mapStateToProps)(Header);
+export default connect(mapStateToProps)(Header);
 
-export default Header;
+// export default Header;
