@@ -5,9 +5,11 @@
 	"main": "index.js",
 	"scripts": {
 		"start": "node dist/app.js",
-		"dev": "nodemon src/app.ts",
+		"client": "npm start --prefix client",
+		"server": "nodemon src/app.ts",
 		"build": "tsc -p .",
-		"watch": "tsc -w"
+		"watch": "tsc -w",
+		"dev": "concurrently \"npm start\"\"npm run client\""
 	},
 	"author": "Adams Banjo",
 	"license": "ISC",
