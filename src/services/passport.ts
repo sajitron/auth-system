@@ -1,5 +1,4 @@
 import { ExtractJwt, Strategy as JwtStrategy } from 'passport-jwt';
-import { Request } from 'express';
 import passportLocal from 'passport-local';
 import dotenv from 'dotenv';
 import passport = require('passport');
@@ -26,7 +25,8 @@ const localLogin = new LocalStrategy(localOptions, async (email: string, passwor
 			return done('Incorrect email and/or password');
 		}
 	} catch (error) {
-		done(error);
+		console.log('passport error', error);
+		return done('Invalid email');
 	}
 });
 

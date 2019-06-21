@@ -37,7 +37,8 @@ const localLogin = new LocalStrategy(localOptions, (email, password, done) => __
         }
     }
     catch (error) {
-        done(error);
+        console.log('passport error', error);
+        return done('Invalid email');
     }
 }));
 // setup options for JWT strategy
