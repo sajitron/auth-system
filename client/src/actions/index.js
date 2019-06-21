@@ -3,16 +3,18 @@ import { AUTH_USER, AUTH_ERROR } from './types';
 
 // register user action
 export const register = (formProps, callback) => async (dispatch) => {
-	const response = await ky.post('http//localhost:5000/register', { json: formProps }).json();
-
-	console.log(response);
-	// try {
-	// 	dispatch({ type: AUTH_USER, payload: response.data.token });
-	// 	localStorage.setItem('as-token', response.data.token);
-	// 	callback();
-	// } catch (error) {
-	// 	dispatch({ type: AUTH_ERROR, payload: response.data.error });
-	// }
+	ky
+		.post('http://localhost:5000/register', { json: formProps })
+		.json()
+		.then((response) => {
+			if (response.token) {
+				dispatch({ type: AUTH_USER, payload: response.token });
+				localStorage.setItem('as-token', response.token);
+			} else {
+				dispatch({ type: AUTH_ERROR, payload: response.error });
+			}
+		})
+		.catch((err) => console.log('our error', err));
 };
 
 // login user action

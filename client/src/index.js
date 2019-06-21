@@ -10,6 +10,7 @@ import reduxThunk from 'redux-thunk';
 import App from './App';
 import reducers from './reducers';
 import HomePage from './pages/Home/home';
+import RegisterPage from './pages/Auth/RegisterPage';
 
 // * Allow for connection to redux dev tools
 
@@ -30,6 +31,7 @@ ReactDOM.render(
 		<BrowserRouter>
 			<App>
 				<Route path="/" exact component={HomePage} />
+				<Route path="/register" component={RegisterPage} />
 			</App>
 		</BrowserRouter>
 	</Provider>,

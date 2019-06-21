@@ -4,8 +4,6 @@ import { compose } from 'redux';
 import { connect } from 'react-redux';
 import * as actions from '../../actions';
 
-import React, { Component } from 'react';
-
 class Register extends Component {
 	onSubmit = (formProps) => {
 		this.props.register(formProps, () => {
@@ -19,6 +17,14 @@ class Register extends Component {
 
 		return (
 			<form onSubmit={handleSubmit(this.onSubmit)}>
+				<fieldset>
+					<label>First Name</label>
+					<Field name="firstName" type="text" component="input" autoComplete="none" />
+				</fieldset>
+				<fieldset>
+					<label>Last Name</label>
+					<Field name="lastName" type="text" component="input" autoComplete="none" />
+				</fieldset>
 				<fieldset>
 					<label>Email</label>
 					<Field name="email" type="text" component="input" autoComplete="none" />
