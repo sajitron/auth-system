@@ -5,6 +5,7 @@
 	"main": "index.js",
 	"scripts": {
 		"start": "node dist/app.js",
+		"start:dev": "nodemon dist/app.js",
 		"client": "npm start --prefix client",
 		"server": "nodemon src/app.ts",
 		"build": "tsc -p .",

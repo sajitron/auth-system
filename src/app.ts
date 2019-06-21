@@ -55,7 +55,7 @@ app.use(express.static(path.join(__dirname, '../', 'dist')));
 
 // serve default file on some error
 app.get('/*', (req: Request, res: Response) => {
-	res.sendfile('index.html', { root: path.join(__dirname, '../', './dist') });
+	res.sendFile('index.html', { root: path.join(__dirname, '../', './dist') });
 });
 
 const PORT = process.env.PORT || 5000;
