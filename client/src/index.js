@@ -11,6 +11,8 @@ import App from './App';
 import reducers from './reducers';
 import HomePage from './pages/Home/home';
 import RegisterPage from './pages/Auth/RegisterPage';
+import LoginPage from './pages/Auth/LoginPage';
+import DashboardPage from './pages/Dashboard/DashboardPage';
 
 // * Allow for connection to redux dev tools
 
@@ -18,6 +20,8 @@ const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 
 const store = createStore(
 	reducers,
+	// the second parameter is the global state
+	// * we are setting the token on the global state
 	{
 		auth: {
 			authenticated: localStorage.getItem('token')
@@ -32,6 +36,8 @@ ReactDOM.render(
 			<App>
 				<Route path="/" exact component={HomePage} />
 				<Route path="/register" component={RegisterPage} />
+				<Route path="/login" component={LoginPage} />
+				<Route path="/dashboard" component={DashboardPage} />
 			</App>
 		</BrowserRouter>
 	</Provider>,

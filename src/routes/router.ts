@@ -20,9 +20,9 @@ export default function router(app: Application) {
 		res.send({ YES: 'It Works!' });
 	});
 
-	app.post('/signin', requireSignin, (req: Request, res: Response) => {
+	app.post('/signin', (req: Request, res: Response) => {
 		passport.authenticate('local', { session: false }, (error: Error, user: any) => {
-			if (error || !user) res.status(400).json({ error });
+			if (error || !user) res.send({ error });
 
 			// this is what ends up in our JWT
 			const payload = {
@@ -32,14 +32,14 @@ export default function router(app: Application) {
 
 			// assign payload to req.user
 			req.login(payload, { session: false }, (error: Error) => {
-				if (error) res.status(400).send({ error });
+				if (error) res.send({ error });
 
 				User.findOne({ email: user.email }, function(err: Error, userDetail: any) {
-					if (err) res.status(422).send({ error: 'Could not get user' });
+					if (err) res.send({ error: 'Could not get user' });
 
 					// if maximum amount of users logged in, reject the login
 					if (userDetail.logNumber >= process.env.MAX_LOGIN!) {
-						res.status(422).send({ error: 'Maximum amount of users logged in' });
+						res.send({ error: 'Maximum amount of users logged in' });
 					} else {
 						// increase the logNumber by 1
 						User.findByIdAndUpdate({ _id: user._id }, { $inc: { logNumber: 1 } }).exec();

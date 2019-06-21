@@ -10,6 +10,7 @@ export const register = (formProps, callback) => async (dispatch) => {
 			if (response.token) {
 				dispatch({ type: AUTH_USER, payload: response.token });
 				localStorage.setItem('as-token', response.token);
+				callback();
 			} else {
 				dispatch({ type: AUTH_ERROR, payload: response.error });
 			}
@@ -19,15 +20,18 @@ export const register = (formProps, callback) => async (dispatch) => {
 
 // login user action
 export const login = (formProps, callback) => async (dispatch) => {
-	const response = await ky.post('http://localhost:5000/signin', formProps);
-
-	try {
-		dispatch({ type: AUTH_USER, payload: response.data.token });
-		localStorage.setItem('as-token', response.data.token);
-		callback();
-	} catch (error) {
-		dispatch({ type: AUTH_ERROR, payload: response.data.error });
-	}
+	ky
+		.post('http://localhost:5000/signin', { json: formProps })
+		.json()
+		.then((response) => {
+			dispatch({ type: AUTH_USER, payload: response.token });
+			localStorage.setItem('token', response.token);
+			callback();
+		})
+		.catch((err) => {
+			// dispatch({ type: AUTH_ERROR, payload: 'Invalid login credentials' });
+			console.log(err);
+		});
 };
 
 // todo setup logout action
